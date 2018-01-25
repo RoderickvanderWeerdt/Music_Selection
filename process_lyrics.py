@@ -5,18 +5,20 @@ import re
 from langdetect import detect #https://pypi.python.org/pypi/langdetect
 
 def clean_lyrics(lyrics):
-    # punctuation string: '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
-    punctuation_regex = re.compile('[{}]'.format(punctuation.replace("'", "")))
-    lyrics = punctuation_regex.sub(' ', lyrics)
-    lyrics = re.sub(r"'+", "", lyrics)
-    lyrics = re.sub(r"\\uFFFD", '_', lyrics) #replaces unicode unknown characters with underscores
-    lyrics.lower()
-    lyrics = re.sub(r"[^a-z]_+[^a-z]", ' ', lyrics) #remove all underscores not preceded by a letter
-    lyrics = re.sub(r"\\r", '', lyrics) #remove line ending symbols
-    lyrics = re.sub(r"\\n", '', lyrics) #remove line ending symbols
-    lyrics = re.sub(r"\\", ' ', lyrics) #remove backslashes
-    lyrics = re.sub(' +', ' ', lyrics) #remove 
-    return lyrics.strip()
+	# punctuation string: '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+	punctuation_regex = re.compile('[{}]'.format(punctuation.replace("'", "")))
+	lyrics = punctuation_regex.sub(' ', lyrics)
+	lyrics = re.sub(r"''+", " ", lyrics)
+	lyrics = re.sub(r"'", "", lyrics)
+	lyrics = re.sub(r"\\uFFFD", '_', lyrics) #replaces unicode unknown characters with underscores
+	lyrics = re.sub('\x00', "", lyrics) #remove NUL bytes
+	lyrics = lyrics.lower()
+	lyrics = re.sub(r"\\r", ' ', lyrics) #remove line ending symbols
+	lyrics = re.sub(r"\\n", ' ', lyrics) #remove line ending symbols
+	lyrics = re.sub(r"[^a-z]_+[^a-z]", ' ', lyrics) #remove all underscores not preceded by a letter
+	lyrics = re.sub(r"\\", ' ', lyrics) #remove backslashes
+	lyrics = re.sub('  +', ' ', lyrics) #remove surplus spaces
+	return lyrics.strip() #remove spare start end spaces
 
 def detect_languages(languages, lyrics):
 	language = ""
