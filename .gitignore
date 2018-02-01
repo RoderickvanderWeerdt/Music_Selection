@@ -4,3 +4,14 @@ try.py
 #datafiles
 *.nq
 *.csv
+*.txt
+
+#temp files
+*.vectors
+*.model
+
+#datafolder
+data/
+
+#misc python
+__pycache__/
