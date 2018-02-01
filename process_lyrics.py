@@ -29,6 +29,8 @@ def clean_lyrics(lyrics):
 	lyrics = re.sub("\n\n+", '\n', lyrics) #remove empty lines
 	return lyrics.strip() #remove spare start end spaces
 
+
+###---------------------------------<<<UNUSED>>>---------------------------------###
 def detect_languages(languages, lyrics):
 	language = ""
 	try:
@@ -83,6 +85,11 @@ def clean_lyrics_pipeline(nq_file = "lyrics.nq", csv_file = "lyrics.csv", txt_fi
 	clean_nq(nq_file, csv_file)
 	clean_csv(csv_file, txt_file)
 
+###------------------------------<<<END OF UNUSED>>>------------------------------###
+
+
+#writes the cleaned lyrics to a new file, saving the first and last line number
+#of each song in the new file in the index_file, so it can be retrieved later
 def clean_kaggle_songlyrics(kaggle_lyrics, new_file, index_file):
 	with open(new_file, 'w') as new:
 		with open(index_file, 'w') as new_index:
@@ -109,7 +116,7 @@ def clean_kaggle_songlyrics(kaggle_lyrics, new_file, index_file):
 					new_index.write(id + ';' + str(index_pointer)+ ';' + str(index_pointer + len(lyrics.split('\n'))) +  ';' + artist + ';' + song_name + '\n')
 					index_pointer += len(lyrics.split('\n'))
 
-#clean one single txt file
+#clean one single lyrics file
 def clean_txt(txt_file, new_file = ""):
 	with open(txt_file, 'r') as raw:
 		lyrics = raw.read()

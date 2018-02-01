@@ -3,6 +3,9 @@ from gensim.models import word2vec as w2v
 from os.path import exists
 import numpy as np
 
+#if an model is found it is loaded, otherwise a new model is created
+#from the datafile, make_new forces a new model to be created, regardless 
+#of any already existing model.
 def create_model(data_file, model_file, make_new = False):
 	if not exists(model_file) or make_new:
 		print("creating new model...")
@@ -12,11 +15,10 @@ def create_model(data_file, model_file, make_new = False):
 	else:
 		print("loading existing model...")
 		model = w2v.Word2Vec.load(model_file)
-		# word_vectors = model.wv
-		# del model
 	return model
 
-#TODO: implement different methods
+#creates a vector for an entity (either song or input text)
+#by averaging all the words in the entity
 def create_entity_vector(model, words):
 	entity_vec = 0
 	word_vecs = []
@@ -29,6 +31,7 @@ def create_entity_vector(model, words):
 
 	#method 1
 	entity_vec = np.average(np.matrix(word_vecs), axis=0)
+	#TODO: implement different methods?
 
 	return entity_vec.tolist()[0]
 
@@ -36,11 +39,10 @@ def printable_vec(vector):
 	printable = ""
 	for number in vector:
 		printable += str(number) + ','
-
 	return printable[:-1] #remove last ','
 
-
-#entity is either a song or an input text
+#creates a vector for each song, as retrieved from lyrics_txt with the use of index_txt
+#all the new songvectors are saved in the newly created song_vectors_file
 def create_entity_vectors(model, lyrics_txt, index_txt, song_vectors_file):
 	with open(lyrics_txt, 'r') as lyrics_doc:
 		with open(index_txt, 'r') as index_doc:
@@ -64,17 +66,3 @@ def create_test_entity(model, lyrics_txt):
 			words += line.split()
 	entity_vec = create_entity_vector(model, words)
 	return entity_vec
-
-
-# model = create_model()
-# print(create_test_entity(model, "test4.txt"))
-
-
-# create_entity_vectors(model, "songlyrics/songdata.txt", "songlyrics/songdata.index.txt")
-
-
-# model = create_model()
-# print(model.wv.most_similar(positive=['woman', 'king'], negative=['man']))
-# print(model.most_similar_cosmul(positive=['man', 'queen'], negative=['woman']))
-# print()
-# print(model.wv.most_similar(positive=['goddess']))

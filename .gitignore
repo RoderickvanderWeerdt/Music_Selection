@@ -10,8 +10,9 @@ try.py
 *.vectors
 *.model
 
-#datafolder
+#datafolders
 data/
+input/
 
 #misc python
 __pycache__/
